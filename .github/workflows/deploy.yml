@@ -35,7 +35,9 @@ jobs:
           cd ..
 
       - name: Terraform Init
+        working-directory: infra
         run: terraform init
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        working-directory: infra
+        run: terraform apply -auto-approve  
