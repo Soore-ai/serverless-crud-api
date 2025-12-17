@@ -43,7 +43,7 @@ jobs:
         working-directory: infra
         run: terraform apply -auto-approve  
       - name: Upload Lambda ZIP Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lambda-zip
           path: lambda/lambda.zip
