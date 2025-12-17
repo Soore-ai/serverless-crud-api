@@ -31,9 +31,8 @@ jobs:
       - name: Build Lambda ZIP
         working-directory: lambda
         run: |
-          cd lambda
-          zip -r ../lambda.zip .
-          cd ..
+          cd functions/crud-lambda
+          zip -r ../../lambda.zip .
 
       - name: Terraform Init
         working-directory: infra
