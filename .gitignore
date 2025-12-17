@@ -1,0 +1,6 @@
+# Terraform build folders
+.terraform/
+.terraform.lock.hcl
+
+# Zip files
+lambda/lambda.zip
