@@ -1,4 +1,4 @@
-name: Terraform CI Pipeline
+name: Terraform Format, Init, Validate & Plan
 
 on:
   push:
@@ -8,25 +8,20 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Format, Init, Validate & Plan
+    name: Terraform CI Pipeline
     runs-on: ubuntu-latest
-
-    # All commands run inside the infra folder
-    defaults:
-      run:
-        working-directory: infra
-
-    # These env vars are available to ALL steps in this job
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: us-east-1
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Setup Terraform
+      # NEW STEP — build lambda.zip
+      - name: Build Lambda ZIP
+        run: |
+          cd lambda
+          zip -r lambda.zip index.js
+
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform fmt check
@@ -34,9 +29,12 @@ jobs:
 
       - name: Terraform init
         run: terraform init
+        working-directory: infra
 
       - name: Terraform validate
         run: terraform validate
+        working-directory: infra
 
       - name: Terraform plan
-        run: terraform plan -input=false
+        run: terraform plan
+        working-directory: infra
