@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Lambda ZIP
         working-directory: lambda
-        run: zip -r ../../lambda.zip .
+        run: zip -r lambda.zip .
 
       - name: Terraform Init
         working-directory: infra
