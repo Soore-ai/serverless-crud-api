@@ -14,19 +14,31 @@ resource "aws_iam_role" "lambda_role" {
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "crud-lambda-policy"
   role = aws_iam_role.lambda_role.id
-
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
+        Sid      = "DynamoDBCRUDAccess"
         Effect   = "Allow"
-        Action   = ["dynamodb:*"]
+        Action   = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Scan",
+          "dynamodb:Query"
+        ]
         Resource = aws_dynamodb_table.items_table.arn
       },
       {
+        Sid      = "CloudWatchLogging"
         Effect   = "Allow"
-        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-        Resource = "*"
+        Action   = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
       }
     ]
   })
